@@ -1,0 +1,19 @@
+docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/etcd:3.2.24
+
+docker tag registry.cn-hangzhou.aliyuncs.com/google_containers/etcd:3.2.24 k8s.gcr.io/etcd:3.2.24
+
+docker rmi registry.cn-hangzhou.aliyuncs.com/google_containers/etcd:3.2.24 
+
+vi /etc/fstab
+#UUID= swap
+
+vi /etc/sysctl.conf
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+
+sysctl -p
+
+
+kubeadm init --pod-network-cidr=10.20.0.0/16 --apiserver-advertise-address=10.20.0.129 --kubernetes-version=v1.15.1 
+
+kubectl apply -f https://docs.projectcalico.org/v3.1/getting-started/kubernetes/installation/hosted/kubeadm/1.7/calico.yaml
